@@ -19,4 +19,25 @@
             <class name="tests.NotesTest"/>
         </classes>
     </test> 
+    
+    <!-- Module 3: Form Interactions -->
+    <test name="Form Interactions Module">
+        <classes>
+            <class name="tests.FormInteractionsTest"/>
+        </classes>
+    </test>
+
+    <!-- Module 4: Alerts -->
+    <test name="Alerts Module">
+        <classes>
+            <class name="tests.AlertsTest"/>
+        </classes>
+    </test>
+
+    <!-- Module 5: Form Validation -->
+    <test name="Form Validation Module">
+        <classes>
+            <class name="tests.FormValidationTest"/>
+        </classes>
+    </test>
 </suite> <!-- Suite -->
