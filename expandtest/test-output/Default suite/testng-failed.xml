@@ -3,16 +3,14 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="tests.NotesTest">
+      <class name="tests.FormInteractionsTest">
         <methods>
           <include name="setup"/>
           <include name="tearDown"/>
-          <include name="deleteNoteTest"/>
-          <include name="createNoteTest"/>
-          <include name="setupNotes"/>
-          <include name="editNoteTest"/>
+          <include name="initPage"/>
+          <include name="testRadioButtonsFlow"/>
         </methods>
-      </class> <!-- tests.NotesTest -->
+      </class> <!-- tests.FormInteractionsTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

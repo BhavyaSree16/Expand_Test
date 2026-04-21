@@ -1,18 +1,11 @@
 package base;
 
 import java.time.Duration;
-import java.util.HashMap;
-
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
+import org.openqa.selenium.chrome.*;
+import org.testng.annotations.*;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import utils.ConfigReader;
 
 public class BaseTest {
 
@@ -21,53 +14,27 @@ public class BaseTest {
     @BeforeMethod
     public void setup() {
 
-        String browser = ConfigReader.getProperty("browser");
+        WebDriverManager.chromedriver().setup();
 
-        System.out.println("Launching browser: " + browser);
+        ChromeOptions options = new ChromeOptions();
 
-        if (browser.equalsIgnoreCase("chrome")) {
+        options.addArguments("--disable-notifications");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--disable-blink-features=AutomationControlled");
 
-            WebDriverManager.chromedriver().setup();
-
-            // 🔥 ChromeOptions added here
-            ChromeOptions options = new ChromeOptions();
-
-            options.addArguments("--disable-notifications");
-            options.addArguments("--disable-infobars");
-
-            HashMap<String, Object> prefs = new HashMap<>();
-            prefs.put("credentials_enable_service", false);
-            prefs.put("profile.password_manager_enabled", false);
-            prefs.put("profile.password_manager_leak_detection", false);
-
-            options.setExperimentalOption("prefs", prefs);
-
-            driver = new ChromeDriver(options);
-
-        } else {
-
-            WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
-        }
+        driver = new ChromeDriver(options);
 
         driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(
-                Integer.parseInt(ConfigReader.getProperty("timeout"))
-        ));
-
-        driver.get(ConfigReader.getProperty("baseUrl"));
-
-        System.out.println("Navigated to URL");
+        System.out.println("Browser launched");
     }
 
     @AfterMethod
     public void tearDown() {
-
-        System.out.println("Closing browser");
-
-        if (driver != null) {
-            driver.quit();
-        }
+        if (driver != null) driver.quit();
+        System.out.println("Browser closed");
     }
 }
