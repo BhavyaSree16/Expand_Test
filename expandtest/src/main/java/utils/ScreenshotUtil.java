@@ -1,38 +1,49 @@
 package utils;
 
+import org.openqa.selenium.*;
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-
-import org.apache.commons.io.FileUtils;
-
 public class ScreenshotUtil {
 
-    public static String captureScreenshot(WebDriver driver, String testName) {
-
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-
-        String path = "C:\\Users\\Bhavya Sree\\eclipse-workspace\\expandtest\\screenshot\\"
-                + testName + "_" + timestamp + ".png";
+    public static void captureScreenshot(WebDriver driver, String name) {
 
         try {
 
-            TakesScreenshot ts = (TakesScreenshot) driver;
-            File src = ts.getScreenshotAs(OutputType.FILE);
+            // Absolute project path
+            String projectPath = System.getProperty("user.dir");
 
-            File dest = new File(path);
+            // Folder path
+            String folderPath = projectPath + "/screenshots/";
+
+            // Create folder if not exists
+            File folder = new File(folderPath);
+            if (!folder.exists()) {
+                folder.mkdirs();
+            }
+
+            // Timestamp
+            String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                    .format(new Date());
+
+            // File path
+            String filePath = folderPath + name + "_" + timestamp + ".png";
+
+            // Take screenshot
+            File src = ((TakesScreenshot) driver)
+                    .getScreenshotAs(OutputType.FILE);
+
+            File dest = new File(filePath);
+
             FileUtils.copyFile(src, dest);
 
-            System.out.println("Screenshot saved at: " + path);
+            System.out.println("Screenshot saved at: " + filePath);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Screenshot failed: " + e.getMessage());
         }
-
-        return path;
     }
 }

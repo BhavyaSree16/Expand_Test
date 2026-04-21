@@ -13,7 +13,7 @@ import listeners.TestListener;
 
 @Listeners(TestListener.class)
 public class LoginTest extends BaseTest {
-
+	
     @DataProvider(name = "loginData")
     public Object[][] getData() {
         return ExcelUtil.getLoginData();

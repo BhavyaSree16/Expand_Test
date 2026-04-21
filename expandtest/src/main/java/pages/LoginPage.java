@@ -14,7 +14,7 @@ public class LoginPage extends BasePage {
 
     By username = By.id("username");
     By password = By.id("password");
-    By loginBtn = By.xpath("//button[@type='submit']");
+    By loginBtn = By.xpath("//button[@id='submit-login']");
     By errorMsg = By.id("flash");
     By logoutBtn = By.xpath("//a[@href='/logout']");
 
@@ -41,41 +41,51 @@ public class LoginPage extends BasePage {
         System.out.println("Clicking login button");
 
         try {
-
             driver.findElement(loginBtn).click();
-
         } catch (Exception e) {
 
-            System.out.println("Normal click failed we are using JavaScript click");
+            System.out.println("Normal click failed using JavaScript click");
 
-            org.openqa.selenium.JavascriptExecutor js =
-                    (org.openqa.selenium.JavascriptExecutor) driver;
-
+            JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].click();", driver.findElement(loginBtn));
         }
     }
 
+
     public boolean isLoginSuccessful() {
-        boolean status = driver.getCurrentUrl().contains("secure");
+
+        boolean status = driver.getPageSource().contains("Logout");
+
         System.out.println("Login success status: " + status);
+
         return status;
     }
 
+    // UPDATED LOGOUT METHOD
     public void logout() {
+
+        System.out.println("Attempting logout");
+
         try {
-            System.out.println("Attempting logout");
+            // wait + click from BasePage
             click(logoutBtn);
-            System.out.println("Logout clicked");
+            System.out.println("Logout clicked successfully");
+
         } catch (Exception e) {
-            System.out.println("Normal click failed, using JS click");
+
+            System.out.println("Normal click failed using JS click");
+
             JavascriptExecutor js = (JavascriptExecutor) driver;
             js.executeScript("arguments[0].click();", driver.findElement(logoutBtn));
         }
     }
 
     public boolean isRedirectedToLogin() {
+
         boolean status = driver.getCurrentUrl().contains("login");
+
         System.out.println("Redirected to login page: " + status);
+
         return status;
     }
 
